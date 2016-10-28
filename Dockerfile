@@ -1,4 +1,4 @@
-FROM localhost:5000/openjdk8 
+FROM localhost:5000/openjdk8
 
 #Install hydra dependencies
 #RUN yum -y install group "Development Tools"
@@ -25,7 +25,8 @@ ENV PATH=$PATH:$FFMPEG_HOME/bin
 RUN mkdir -p /opt/install/ffmpeg_sources /opt/install/ffmpeg_build
 
 ENV FFMPEG_VERSION=3.2
-# FFmpeg
+
+# install FFmpeg
 RUN curl -s http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz | tar zxvf - -C . && \
   cd ffmpeg-${FFMPEG_VERSION} && \
   ./configure \
@@ -38,8 +39,7 @@ RUN hash -r
 # install fits
 RUN cd /opt/install && wget https://github.com/harvard-lts/fits/archive/master.zip && unzip master.zip && chmod +x fits-master/fits.sh && cp -r /opt/install/fits-master/* /usr/local/bin/ && ln -s /usr/local/bin/fits.sh /usr/local/bin/fits
 
-# install FFmpeg
-
-
-## Add symlinks
-#RUN ln -s /opt/ffmpeg/bin/ffmpeg /usr/bin/ffmpeg &&  ln -s /opt/ffmpeg/bin/ffprobe /usr/bin/ffprobe
+# remove files
+RUN rm /opt/install/*zip && \
+    rm -R /ffmpeg* && \
+    rm -rf /var/cache/apk/*
